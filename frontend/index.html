@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Chinmay CP — Portfolio</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">Chinmay CP</div>
+      <nav class="nav">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="home" class="hero">
+      <div class="container hero-inner">
+        <div class="hero-text">
+          <h1>Hi, I'm <span class="accent">Chinmay CP</span></h1>
+          <p class="lead">Full Stack Web Developer — building clean, user-friendly web applications.</p>
+          <a class="btn" href="#projects">View Projects</a>
+        </div>
+        <div class="hero-image" aria-hidden="true">
+          <img src="assets/profile.webp" alt="Chinmay profile photo" />
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="about">
+      <div class="container about-inner">
+        <div class="about-photo">
+          <img src="assets/profile.webp" alt="Chinmay profile" />
+        </div>
+        <div class="about-content">
+          <h2>About Me</h2>
+          <p>I am a web developer passionate about writing clean code and crafting delightful UI experiences.</p>
+          <ul class="meta">
+            <li><strong>College:</strong> Maharaja Institute of Technology Mysore</li>
+            <li><strong>USN:</strong> 4MH24CS404</li>
+            <li><strong>Email:</strong> <a id="publicEmail" href="mailto:chinmaycp13@gmail.com">chinmaycp13@gmail.com</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" class="skills">
+      <div class="container">
+        <h2>Skills</h2>
+        <div class="skills-grid">
+          <div class="skill"><strong>HTML</strong><span>Proficient</span></div>
+          <div class="skill"><strong>CSS</strong><span>Responsive Layouts</span></div>
+          <div class="skill"><strong>JavaScript</strong><span>ES6+, DOM</span></div>
+          <div class="skill"><strong>Node.js</strong><span>Express APIs</span></div>
+          <div class="skill"><strong>Python</strong><span>Scripting & AI</span></div>
+          <div class="skill"><strong>Java</strong><span>OOP & Backend</span></div>
+          <div class="skill"><strong>C</strong><span>Systems Programming</span></div>
+          <div class="skill"><strong>ML</strong><span>Machine Learning</span></div>
+          <div class="skill"><strong>Prompt Engineering</strong><span>AI Optimization</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="projects">
+      <div class="container">
+        <h2>Projects</h2>
+        <div class="projects-grid">
+          <a href="https://github.com/chinmay-sys/weather-app" target="_blank" class="card">
+            <h3>Weather App</h3>
+            <p>Realtime weather using OpenWeather API with clean UI and caching.</p>
+          </a>
+          <a href="https://github.com/chinmay-sys/ATS-Checker" target="_blank" class="card">
+            <h3>ATS-Checker</h3>
+            <p>Resume optimization tool built with HTML to help match job descriptions.</p>
+          </a>
+          <a href="https://github.com/chinmay-sys/Gemini-AI-Study-Partner" target="_blank" class="card">
+            <h3>Gemini-AI-Study-Partner</h3>
+            <p>A study partner with the help of Gemini AI, built with Python.</p>
+          </a>
+          <a href="https://github.com/chinmay-sys/Pathfinder-refine" target="_blank" class="card">
+            <h3>Pathfinder-refine</h3>
+            <p>Path visualization and algorithm tool built with TypeScript.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact">
+      <div class="container">
+        <h2>Contact Me</h2>
+        <form id="contactForm" class="contact-form">
+          <div class="row">
+            <input type="text" id="name" name="name" placeholder="Your name" required />
+            <input type="email" id="email" name="email" placeholder="Your email" required />
+          </div>
+          <textarea id="message" name="message" placeholder="Your message" rows="6" required></textarea>
+          <button type="submit" class="btn primary">Send Message</button>
+        </form>
+        <p class="note">This form will send an email using the backend server.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2025 Chinmay CP • <a id="footerEmail" href="mailto:chinmaycp13@gmail.com">chinmaycp13@gmail.com</a></p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

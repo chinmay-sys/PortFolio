@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "rewrites": [
+    { "source": "/api/contact", "destination": "/backend/routes/contact" },
+    { "source": "/(.*)", "destination": "/frontend/$1" }
+  ]
+}
