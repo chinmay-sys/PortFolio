@@ -1,21 +1,39 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description"
+    content="Chinmay CP — Full Stack Web Developer building clean, user-friendly web applications. Explore my projects and skills." />
+  <meta name="theme-color" content="#0f0f1a" />
   <title>Chinmay CP — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
+  <!-- Particle canvas background -->
+  <canvas id="particleCanvas"></canvas>
+
+  <!-- Custom cursor dot -->
+  <div id="cursorDot"></div>
+  <div id="cursorRing"></div>
+
   <header class="site-header">
     <div class="container header-inner">
-      <div class="brand">Chinmay CP</div>
+      <div class="brand" data-text="Chinmay CP">Chinmay CP</div>
       <nav class="nav">
         <a href="#home">Home</a>
         <a href="#about">About</a>
         <a href="#skills">Skills</a>
         <a href="#projects">Projects</a>
         <a href="#contact">Contact</a>
+        <span class="nav-hint" title="Press Ctrl+K">⌘K</span>
       </nav>
     </div>
   </header>
@@ -24,96 +42,189 @@
     <section id="home" class="hero">
       <div class="container hero-inner">
         <div class="hero-text">
-          <h1>Hi, I'm <span class="accent">Chinmay CP</span></h1>
-          <p class="lead">Full Stack Web Developer — building clean, user-friendly web applications.</p>
-          <a class="btn" href="#projects">View Projects</a>
+          <div class="terminal-window">
+            <div class="terminal-bar">
+              <span class="terminal-dot red"></span>
+              <span class="terminal-dot yellow"></span>
+              <span class="terminal-dot green"></span>
+              <span class="terminal-title">chinmay@portfolio:~</span>
+            </div>
+            <div class="terminal-body" id="terminalBody">
+              <!-- Lines will be typed by JS -->
+            </div>
+          </div>
+          <a class="btn glow-btn" href="#projects">
+            <span>View Projects</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </a>
         </div>
         <div class="hero-image" aria-hidden="true">
+          <div class="image-glow"></div>
           <img src="assets/profile.webp" alt="Chinmay profile photo" />
+          <div class="orbit-ring"></div>
+          <div class="orbit-ring orbit-ring-2"></div>
         </div>
       </div>
     </section>
 
-    <section id="about" class="about">
+    <section id="about" class="about" data-reveal>
       <div class="container about-inner">
         <div class="about-photo">
           <img src="assets/profile.webp" alt="Chinmay profile" />
         </div>
         <div class="about-content">
-          <h2>About Me</h2>
-          <p>I am a web developer passionate about writing clean code and crafting delightful UI experiences.</p>
+          <h2 class="section-title">About Me</h2>
+          <p>I am a web developer passionate about writing clean code and crafting delightful UI experiences. I don't
+            just build websites — I engineer experiences.</p>
           <ul class="meta">
             <li><strong>College:</strong> Maharaja Institute of Technology Mysore</li>
             <li><strong>USN:</strong> 4MH24CS404</li>
-            <li><strong>Email:</strong> <a id="publicEmail" href="mailto:chinmaycp13@gmail.com">chinmaycp13@gmail.com</a></li>
+            <li><strong>Email:</strong> <a id="publicEmail"
+                href="mailto:chinmaycp13@gmail.com">chinmaycp13@gmail.com</a></li>
           </ul>
         </div>
       </div>
     </section>
 
-    <section id="skills" class="skills">
+    <section id="skills" class="skills" data-reveal>
       <div class="container">
-        <h2>Skills</h2>
+        <h2 class="section-title">Skills</h2>
         <div class="skills-grid">
-          <div class="skill"><strong>HTML</strong><span>Proficient</span></div>
-          <div class="skill"><strong>CSS</strong><span>Responsive Layouts</span></div>
-          <div class="skill"><strong>JavaScript</strong><span>ES6+, DOM</span></div>
-          <div class="skill"><strong>Node.js</strong><span>Express APIs</span></div>
-          <div class="skill"><strong>Python</strong><span>Scripting & AI</span></div>
-          <div class="skill"><strong>Java</strong><span>OOP & Backend</span></div>
-          <div class="skill"><strong>C</strong><span>Systems Programming</span></div>
-          <div class="skill"><strong>ML</strong><span>Machine Learning</span></div>
-          <div class="skill"><strong>Prompt Engineering</strong><span>AI Optimization</span></div>
+          <div class="skill" data-skill="html">
+            <div class="skill-icon">&#60;/&#62;</div>
+            <strong>HTML</strong><span>Proficient</span>
+          </div>
+          <div class="skill" data-skill="css">
+            <div class="skill-icon">{ }</div>
+            <strong>CSS</strong><span>Responsive Layouts</span>
+          </div>
+          <div class="skill" data-skill="js">
+            <div class="skill-icon">JS</div>
+            <strong>JavaScript</strong><span>ES6+, DOM</span>
+          </div>
+          <div class="skill" data-skill="node">
+            <div class="skill-icon">⬡</div>
+            <strong>Node.js</strong><span>Express APIs</span>
+          </div>
+          <div class="skill" data-skill="python">
+            <div class="skill-icon">🐍</div>
+            <strong>Python</strong><span>Scripting & AI</span>
+          </div>
+          <div class="skill" data-skill="java">
+            <div class="skill-icon">☕</div>
+            <strong>Java</strong><span>OOP & Backend</span>
+          </div>
+          <div class="skill" data-skill="c">
+            <div class="skill-icon">C</div>
+            <strong>C</strong><span>Systems Programming</span>
+          </div>
+          <div class="skill" data-skill="ml">
+            <div class="skill-icon">🧠</div>
+            <strong>ML</strong><span>Machine Learning</span>
+          </div>
+          <div class="skill" data-skill="ai">
+            <div class="skill-icon">✦</div>
+            <strong>Prompt Eng.</strong><span>AI Optimization</span>
+          </div>
         </div>
       </div>
     </section>
 
-    <section id="projects" class="projects">
+    <section id="projects" class="projects" data-reveal>
       <div class="container">
-        <h2>Projects</h2>
+        <h2 class="section-title">Projects</h2>
         <div class="projects-grid">
-          <a href="https://github.com/chinmay-sys/weather-app" target="_blank" class="card">
+          <a href="https://github.com/chinmay-sys/weather-app" target="_blank" class="card" data-tilt>
+            <div class="card-shine"></div>
+            <div class="card-tag">API · JavaScript</div>
             <h3>Weather App</h3>
             <p>Realtime weather using OpenWeather API with clean UI and caching.</p>
+            <div class="card-link">View on GitHub →</div>
           </a>
-          <a href="https://github.com/chinmay-sys/ATS-Checker" target="_blank" class="card">
+          <a href="https://github.com/chinmay-sys/ATS-Checker" target="_blank" class="card" data-tilt>
+            <div class="card-shine"></div>
+            <div class="card-tag">Tool · HTML</div>
             <h3>ATS-Checker</h3>
             <p>Resume optimization tool built with HTML to help match job descriptions.</p>
+            <div class="card-link">View on GitHub →</div>
           </a>
-          <a href="https://github.com/chinmay-sys/Gemini-AI-Study-Partner" target="_blank" class="card">
-            <h3>Gemini-AI-Study-Partner</h3>
+          <a href="https://github.com/chinmay-sys/Gemini-AI-Study-Partner" target="_blank" class="card" data-tilt>
+            <div class="card-shine"></div>
+            <div class="card-tag">AI · Python</div>
+            <h3>Gemini AI Study Partner</h3>
             <p>A study partner with the help of Gemini AI, built with Python.</p>
+            <div class="card-link">View on GitHub →</div>
           </a>
-          <a href="https://github.com/chinmay-sys/Pathfinder-refine" target="_blank" class="card">
-            <h3>Pathfinder-refine</h3>
+          <a href="https://github.com/chinmay-sys/Pathfinder-refine" target="_blank" class="card" data-tilt>
+            <div class="card-shine"></div>
+            <div class="card-tag">Algorithm · TypeScript</div>
+            <h3>Pathfinder Refine</h3>
             <p>Path visualization and algorithm tool built with TypeScript.</p>
+            <div class="card-link">View on GitHub →</div>
           </a>
         </div>
       </div>
     </section>
 
-    <section id="contact" class="contact">
+    <section id="contact" class="contact" data-reveal>
       <div class="container">
-        <h2>Contact Me</h2>
-        <form id="contactForm" class="contact-form">
-          <div class="row">
-            <input type="text" id="name" name="name" placeholder="Your name" required />
-            <input type="email" id="email" name="email" placeholder="Your email" required />
-          </div>
-          <textarea id="message" name="message" placeholder="Your message" rows="6" required></textarea>
-          <button type="submit" class="btn primary">Send Message</button>
-        </form>
-        <p class="note">This form will send an email using the backend server.</p>
+        <h2 class="section-title">Get In Touch</h2>
+        <div class="contact-links-box">
+          <a href="https://github.com/chinmay-sys" target="_blank" class="contact-link-row">
+            <span>GitHub</span>
+            <span class="row-arrow">→</span>
+          </a>
+          <a href="https://www.linkedin.com/in/chinmay-cp-079873281" target="_blank" class="contact-link-row">
+            <span>LinkedIn</span>
+            <span class="row-arrow">→</span>
+          </a>
+          <a href="mailto:chinmaycp13@gmail.com" class="contact-link-row">
+            <span>Email</span>
+            <span class="row-arrow">→</span>
+          </a>
+        </div>
+        <p class="contact-caption">View all <a href="https://github.com/chinmay-sys?tab=repositories"
+            target="_blank">projects</a> or connect on <a href="https://github.com/chinmay-sys"
+            target="_blank">GitHub</a>.</p>
       </div>
+      <div id="toast" class="toast" aria-live="polite"></div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <div class="container">
-      <p>© 2025 Chinmay CP • <a id="footerEmail" href="mailto:chinmaycp13@gmail.com">chinmaycp13@gmail.com</a></p>
+    <div class="container footer-inner">
+      <p>&copy; <span id="currentYear"></span> Chinmay CP</p>
     </div>
   </footer>
 
+  <!-- Command Palette (Ctrl+K) -->
+  <div id="commandPalette" class="cmd-palette" hidden>
+    <div class="cmd-overlay"></div>
+    <div class="cmd-modal">
+      <div class="cmd-search-bar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8" />
+          <path d="M21 21l-4.35-4.35" />
+        </svg>
+        <input type="text" id="cmdInput" placeholder="Type a command…" autocomplete="off" />
+        <kbd>ESC</kbd>
+      </div>
+      <ul class="cmd-list" id="cmdList">
+        <li data-action="home"><span class="cmd-icon">🏠</span> Go to Home</li>
+        <li data-action="about"><span class="cmd-icon">👤</span> Go to About</li>
+        <li data-action="skills"><span class="cmd-icon">⚡</span> Go to Skills</li>
+        <li data-action="projects"><span class="cmd-icon">📁</span> Go to Projects</li>
+        <li data-action="contact"><span class="cmd-icon">✉️</span> Go to Contact</li>
+        <li data-action="github"><span class="cmd-icon">🐙</span> Open GitHub Profile</li>
+        <li data-action="email"><span class="cmd-icon">📧</span> Send Email</li>
+        <li data-action="theme"><span class="cmd-icon">🌗</span> Toggle Dark/Light Mode</li>
+      </ul>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
+
 </html>
