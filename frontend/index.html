@@ -76,8 +76,7 @@
         </div>
         <div class="about-content">
           <h2 class="section-title">About Me</h2>
-          <p>I am a web developer passionate about writing clean code and crafting delightful UI experiences. I don't
-            just build websites — I engineer experiences.</p>
+          <p>Full-stack developer specializing in building performant and scalable web applications. I write clean, efficient code and design user interfaces that prioritize usability, speed, and real-world impact..</p>
           <ul class="meta">
             <li><strong>College:</strong> Maharaja Institute of Technology Mysore</li>
             <li><strong>USN:</strong> 4MH24CS404</li>
@@ -136,34 +135,103 @@
       <div class="container">
         <h2 class="section-title">Projects</h2>
         <div class="projects-grid">
+
           <a href="https://github.com/chinmay-sys/weather-app" target="_blank" class="card" data-tilt>
             <div class="card-shine"></div>
             <div class="card-tag">API · JavaScript</div>
             <h3>Weather App</h3>
-            <p>Realtime weather using OpenWeather API with clean UI and caching.</p>
+            <p class="card-desc">A real-time weather dashboard that fetches live data from the OpenWeather API. Users
+              can search any city and instantly view temperature, humidity, wind speed, and a 5-day forecast — all
+              wrapped in a clean, responsive UI with local storage caching to minimize API calls.</p>
+            <ul class="card-features">
+              <li>Live weather data with city search</li>
+              <li>5-day forecast with visual icons</li>
+              <li>LocalStorage caching for performance</li>
+            </ul>
+            <div class="card-stack">
+              <span class="stack-pill">JavaScript</span>
+              <span class="stack-pill">OpenWeather API</span>
+              <span class="stack-pill">CSS3</span>
+            </div>
             <div class="card-link">View on GitHub →</div>
           </a>
+
           <a href="https://github.com/chinmay-sys/ATS-Checker" target="_blank" class="card" data-tilt>
             <div class="card-shine"></div>
             <div class="card-tag">Tool · HTML</div>
-            <h3>ATS-Checker</h3>
-            <p>Resume optimization tool built with HTML to help match job descriptions.</p>
-            <div class="card-link">View on GitHub →</div>
+            <h3>ATS Checker</h3>
+            <p class="card-desc">A client-side resume optimization tool that helps job seekers match their resumes to
+              specific job descriptions. It analyzes keyword overlap, identifies missing skills, and provides an ATS
+              compatibility score — all running entirely in the browser with zero backend dependencies.</p>
+            <ul class="card-features">
+              <li>Keyword matching & gap analysis</li>
+              <li>ATS compatibility scoring</li>
+              <li>100% client-side, no data leaves the browser</li>
+            </ul>
+            <div class="card-stack">
+              <span class="stack-pill">HTML</span>
+              <span class="stack-pill">JavaScript</span>
+              <span class="stack-pill">Vercel</span>
+            </div>
+            <div class="card-links-row">
+              <span class="card-link">View on GitHub →</span>
+              <span class="card-link card-demo"
+                onclick="event.preventDefault();window.open('https://ats-checker-navy-chi.vercel.app','_blank')">Live
+                Demo ↗</span>
+            </div>
           </a>
+
           <a href="https://github.com/chinmay-sys/Gemini-AI-Study-Partner" target="_blank" class="card" data-tilt>
             <div class="card-shine"></div>
             <div class="card-tag">AI · Python</div>
             <h3>Gemini AI Study Partner</h3>
-            <p>A study partner with the help of Gemini AI, built with Python.</p>
-            <div class="card-link">View on GitHub →</div>
+            <p class="card-desc">An AI-powered study companion built with Streamlit and Google's Gemini API. It acts as
+              an interactive tutor — answer questions, explain concepts, summarize notes, and generate practice problems
+              on any subject. Deployed as a serverless Python function on Vercel.</p>
+            <ul class="card-features">
+              <li>Conversational AI tutoring via Gemini</li>
+              <li>Streamlit-based interactive UI</li>
+              <li>Serverless deployment on Vercel</li>
+            </ul>
+            <div class="card-stack">
+              <span class="stack-pill">Python</span>
+              <span class="stack-pill">Gemini API</span>
+              <span class="stack-pill">Streamlit</span>
+            </div>
+            <div class="card-links-row">
+              <span class="card-link">View on GitHub →</span>
+              <span class="card-link card-demo"
+                onclick="event.preventDefault();window.open('https://gemini-ai-study-partner.vercel.app','_blank')">Live
+                Demo ↗</span>
+            </div>
           </a>
+
           <a href="https://github.com/chinmay-sys/Pathfinder-refine" target="_blank" class="card" data-tilt>
             <div class="card-shine"></div>
             <div class="card-tag">Algorithm · TypeScript</div>
             <h3>Pathfinder Refine</h3>
-            <p>Path visualization and algorithm tool built with TypeScript.</p>
-            <div class="card-link">View on GitHub →</div>
+            <p class="card-desc">An interactive pathfinding algorithm visualizer built with React and TypeScript. Watch
+              BFS, DFS, Dijkstra, and A* traverse a grid in real time. Draw walls, set start/end points, and compare
+              algorithm performance side-by-side with animated step-through visualization.</p>
+            <ul class="card-features">
+              <li>BFS, DFS, Dijkstra & A* visualizations</li>
+              <li>Interactive grid with wall drawing</li>
+              <li>Step-by-step animated traversal</li>
+            </ul>
+            <div class="card-stack">
+              <span class="stack-pill">TypeScript</span>
+              <span class="stack-pill">React</span>
+              <span class="stack-pill">Tailwind CSS</span>
+              <span class="stack-pill">Vite</span>
+            </div>
+            <div class="card-links-row">
+              <span class="card-link">View on GitHub →</span>
+              <span class="card-link card-demo"
+                onclick="event.preventDefault();window.open('https://pathfinder-refine.vercel.app','_blank')">Live Demo
+                ↗</span>
+            </div>
           </a>
+
         </div>
       </div>
     </section>
