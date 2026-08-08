@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AquaSense — Water Quality Monitoring IoT Dashboard</title>
+  <meta name="description" content="AquaSense — Premium real-time water quality monitoring dashboard featuring Leaflet maps, live Chart.js graphs, and historical logs.">
+  <meta name="theme-color" content="#0a0b10">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- External CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- DASHBOARD WRAPPER -->
+  <div class="dashboard-container">
+    
+    <!-- HEADER -->
+    <header class="db-header">
+      <div class="header-left">
+        <a href="../index.html" class="back-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          <span>Portfolio</span>
+        </a>
+        <div class="brand">
+          <span class="brand-tag">IoT.SYS</span>
+          <h1>AquaSense</h1>
+        </div>
+      </div>
+      
+      <div class="header-center">
+        <div class="system-status active">
+          <span class="status-pulse"></span>
+          <span class="status-text" id="systemStatusText">ALL SYSTEMS OPERATIONAL</span>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <div class="station-selector-wrapper">
+          <label for="stationSelect">Monitoring Station</label>
+          <select id="stationSelect" class="station-select">
+            <option value="kaveri">Kaveri River (Srirangapatna)</option>
+            <option value="kukkarahalli">Kukkarahalli Lake (Mysore)</option>
+            <option value="kabini">Kabini Reservoir (H.D. Kote)</option>
+          </select>
+        </div>
+        <div class="time-display" id="timeDisplay">14:17:15</div>
+      </div>
+    </header>
+
+    <!-- MAIN GRID -->
+    <main class="db-grid">
+      
+      <!-- LEFT COLUMN: MAP & INFO -->
+      <section class="grid-left">
+        <!-- MAP CARD -->
+        <div class="db-card map-card">
+          <div class="card-header">
+            <div class="header-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              <h2>Geographic Telemetry</h2>
+            </div>
+            <span class="card-subtitle">Select station marker to fetch data</span>
+          </div>
+          <div class="card-body map-container-wrapper">
+            <div id="map"></div>
+          </div>
+        </div>
+
+        <!-- STATION INFO CARD -->
+        <div class="db-card info-card">
+          <div class="card-header">
+            <div class="header-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line><line x1="15" y1="3" x2="15" y2="21"></line><line x1="3" y1="9" x2="21" y2="9"></line><line x1="3" y1="15" x2="21" y2="15"></line></svg>
+              <h2>Station Profile</h2>
+            </div>
+          </div>
+          <div class="card-body profile-details">
+            <div class="info-row">
+              <span class="info-label">Location Name</span>
+              <span class="info-val" id="profileName">Kaveri River (Srirangapatna)</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Coordinates</span>
+              <span class="info-val font-mono" id="profileCoords">12.4233° N, 76.6948° E</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Water Source Type</span>
+              <span class="info-val" id="profileSource">River Basin (Freshwater)</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Overall Safety Status</span>
+              <span class="status-badge safe" id="profileSafety">SAFE</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Water Quality Index (WQI)</span>
+              <span class="info-val highlight-cyan" id="profileWQI">92 / 100</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Telemetry Source</span>
+              <span class="info-val text-muted font-mono" id="profileNodeId">IoT-node-309-kvr</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CLOUD SYNC CONSOLE -->
+        <div class="db-card cloud-card">
+          <div class="card-header">
+            <div class="header-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
+              <h2>Cloud Broker Console</h2>
+            </div>
+            <span class="status-badge safe" id="cloudStatus">CONNECTED</span>
+          </div>
+          <div class="card-body cloud-console-body">
+            <div class="cloud-telemetry-meta">
+              <div class="meta-item">
+                <span class="meta-label">Broker Link</span>
+                <span class="meta-val font-mono" id="brokerIp">aws-iot-broker</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Protocol</span>
+                <span class="meta-val font-mono">MQTT/WSS</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Latency</span>
+                <span class="meta-val font-mono highlight-cyan" id="cloudLatency">24ms</span>
+              </div>
+            </div>
+            
+            <div class="terminal-container">
+              <div class="terminal-header">
+                <span>live_network_stream.log</span>
+                <span class="terminal-dot-green"></span>
+              </div>
+              <div class="terminal-logs" id="terminalLogs">
+                <!-- Dynamic logs stream -->
+              </div>
+            </div>
+            
+            <div class="cloud-actions">
+              <button id="syncNowBtn" class="btn-action btn-full">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"></path><path d="M1 20v-6h6"></path><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                <span>Save & Sync Data to Cloud</span>
+              </button>
+              <button id="clearLogsBtn" class="btn-pagination">
+                Reset Broker Cache
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT COLUMN: TELEMETRY & ANALYTICS -->
+      <section class="grid-right">
+        
+        <!-- TELEMETRY METRICS ROW -->
+        <div class="metrics-row">
+          
+          <!-- PH CARD -->
+          <div class="db-card metric-card" id="phCard">
+            <div class="metric-glow"></div>
+            <div class="card-header-mini">
+              <span>pH LEVEL</span>
+              <span class="badge safe" id="phBadge">SAFE</span>
+            </div>
+            <div class="metric-value-container">
+              <div class="metric-value">
+                <span class="val-num" id="phValue">7.42</span>
+                <span class="val-unit">pH</span>
+              </div>
+              <div class="metric-trend font-mono" id="phTrend">
+                <span class="trend-icon">→</span> <span>stable</span>
+              </div>
+            </div>
+            <div class="gauge-bar-wrapper">
+              <div class="gauge-bar">
+                <div class="gauge-fill" id="phFill" style="width: 74%;"></div>
+              </div>
+              <div class="gauge-limits">
+                <span>0.0</span>
+                <span>Safe: 6.5 - 8.5</span>
+                <span>14.0</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- TDS CARD -->
+          <div class="db-card metric-card" id="tdsCard">
+            <div class="metric-glow"></div>
+            <div class="card-header-mini">
+              <span>TOTAL DISSOLVED SOLIDS</span>
+              <span class="badge safe" id="tdsBadge">SAFE</span>
+            </div>
+            <div class="metric-value-container">
+              <div class="metric-value">
+                <span class="val-num" id="tdsValue">148</span>
+                <span class="val-unit">ppm</span>
+              </div>
+              <div class="metric-trend font-mono" id="tdsTrend">
+                <span class="trend-icon">↓</span> <span>-2 ppm/m</span>
+              </div>
+            </div>
+            <div class="gauge-bar-wrapper">
+              <div class="gauge-bar">
+                <div class="gauge-fill" id="tdsFill" style="width: 30%;"></div>
+              </div>
+              <div class="gauge-limits">
+                <span>0</span>
+                <span>Safe: &lt; 300 ppm</span>
+                <span>1000+</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- TEMPERATURE CARD -->
+          <div class="db-card metric-card" id="tempCard">
+            <div class="metric-glow"></div>
+            <div class="card-header-mini">
+              <span>WATER TEMPERATURE</span>
+              <span class="badge safe" id="tempBadge">SAFE</span>
+            </div>
+            <div class="metric-value-container">
+              <div class="metric-value">
+                <span class="val-num" id="tempValue">24.8</span>
+                <span class="val-unit">°C</span>
+              </div>
+              <div class="metric-trend font-mono" id="tempTrend">
+                <span class="trend-icon">↑</span> <span>+0.1°C/h</span>
+              </div>
+            </div>
+            <div class="gauge-bar-wrapper">
+              <div class="gauge-bar">
+                <div class="gauge-fill" id="tempFill" style="width: 49.6%;"></div>
+              </div>
+              <div class="gauge-limits">
+                <span>0°C</span>
+                <span>Safe: 15°C - 30°C</span>
+                <span>50°C</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- GRAPHS CARD -->
+        <div class="db-card chart-card">
+          <div class="card-header">
+            <div class="header-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"></path><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"></path></svg>
+              <h2>Real-Time Telemetry Analytics</h2>
+            </div>
+            <div class="chart-controls">
+              <button class="btn-tab active" data-chart="all">All Metrics</button>
+              <button class="btn-tab" data-chart="ph">pH</button>
+              <button class="btn-tab" data-chart="tds">TDS</button>
+              <button class="btn-tab" data-chart="temp">Temperature</button>
+            </div>
+          </div>
+          <div class="card-body chart-wrapper">
+            <canvas id="telemetryChart"></canvas>
+          </div>
+        </div>
+
+        <!-- AI DIAGNOSTICS & PITCH DECK CARD -->
+        <div class="db-card ai-card">
+          <div class="card-header">
+            <div class="header-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 1 7.54 16.59c-.24.25-.39.58-.39.93v1.98c0 .83-.67 1.5-1.5 1.5H6.35c-.83 0-1.5-.67-1.5-1.5V19.52c0-.35-.15-.68-.39-.93A10 10 0 0 1 12 2z"></path><line x1="8" y1="22" x2="16" y2="22"></line></svg>
+              <h2>AI System Core & Pitch Brief</h2>
+            </div>
+            <div class="ai-tabs">
+              <button class="btn-tab btn-ai-tab active" data-tab="ai-diagnostics">AI Diagnostics</button>
+              <button class="btn-tab btn-ai-tab" data-tab="ai-deck">Project Brief</button>
+            </div>
+          </div>
+          <div class="card-body ai-body">
+            
+            <!-- TAB 1: AI DIAGNOSTICS -->
+            <div class="ai-tab-content active" id="tab-ai-diagnostics">
+              <div class="ai-diagnostics-grid">
+                
+                <div class="ai-text-panel">
+                  <div class="panel-subtitle">REAL-TIME COGNITIVE ASSESSMENT</div>
+                  <p class="ai-reasoning" id="aiReasoning">Evaluating telemetry feed... Neural models correlating chemical ratios against baseline river profiles.</p>
+                  <div class="ai-alert-box" id="aiAlertBox">
+                    <span class="status-pulse" id="aiAlertPulse"></span>
+                    <span id="aiAlertText">AI Model: Chemical parameters within drinking water limits.</span>
+                  </div>
+                </div>
+
+                <div class="ai-forecast-panel">
+                  <div class="panel-subtitle">LSTM PREDICTIVE TRENDS (6H FORECAST)</div>
+                  <div class="forecast-meters">
+                    <div class="forecast-item">
+                      <div class="forecast-info">
+                        <span>Predicted pH</span>
+                        <strong id="predPh">7.40</strong>
+                      </div>
+                      <div class="forecast-status font-mono safe" id="predPhStatus">NORMAL (94% Conf.)</div>
+                    </div>
+                    <div class="forecast-item">
+                      <div class="forecast-info">
+                        <span>Predicted TDS</span>
+                        <strong id="predTds">149 ppm</strong>
+                      </div>
+                      <div class="forecast-status font-mono safe" id="predTdsStatus">NORMAL (91% Conf.)</div>
+                    </div>
+                    <div class="forecast-item">
+                      <div class="forecast-info">
+                        <span>Anomaly Risk</span>
+                        <strong id="predAnomaly">1.2%</strong>
+                      </div>
+                      <div class="forecast-status font-mono safe" id="predAnomalyStatus">LOW RISK</div>
+                    </div>
+                    <div class="forecast-item">
+                      <div class="forecast-info">
+                        <span>Predicted Disease Risk</span>
+                        <strong id="predDisease">2.4%</strong>
+                      </div>
+                      <div class="forecast-status font-mono safe" id="predDiseaseStatus">LOW RISK</div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- TAB 2: PROJECT BRIEF -->
+            <div class="ai-tab-content" id="tab-ai-deck">
+              <div class="pitch-deck-container">
+                
+                <!-- SLIDES CAROUSEL -->
+                <div class="pitch-carousel">
+                  
+                  <!-- SLIDE 1: PROBLEM -->
+                  <div class="pitch-slide active" data-slide="1">
+                    <div class="slide-badge">SLIDE 01 / 05: THE PROBLEM</div>
+                    <h3>Manual Sampling is Failing Our Ecosystems</h3>
+                    <ul class="slide-points">
+                      <li><strong>Delayed Action:</strong> Water testing currently relies on physical laboratory collection, taking 48h to 7 days. By then, contamination has already spread.</li>
+                      <li><strong>Low Spatial Resolution:</strong> Static monitoring stations miss downstream pollution or localized agricultural runoffs.</li>
+                      <li><strong>High Operational Cost:</strong> Manual testing costs municipalities thousands of dollars monthly, restricting testing frequency.</li>
+                    </ul>
+                  </div>
+
+                  <!-- SLIDE 2: SOLUTION -->
+                  <div class="pitch-slide" data-slide="2">
+                    <div class="slide-badge">SLIDE 02 / 05: OUR AI SOLUTION</div>
+                    <h3>Autonomous Edge-AI Telemetry</h3>
+                    <ul class="slide-points">
+                      <li><strong>Mobile Drone Patrols:</strong> GPS-guided Autonomous Surface Vehicles (ASVs) patrol water bodies, providing high-density spatial mapping.</li>
+                      <li><strong>Edge Anomaly Detection:</strong> Low-power microcontrollers utilize Isolation Forest models to flag sensor tampering and contamination instantly.</li>
+                      <li><strong>Predictive Deep Learning:</strong> Cloud-based LSTM neural networks forecast water safety index declines 12 hours in advance.</li>
+                    </ul>
+                  </div>
+
+                  <!-- SLIDE 3: HARDWARE ARCHITECTURE -->
+                  <div class="pitch-slide" data-slide="3">
+                    <div class="slide-badge">SLIDE 03 / 05: HARDWARE SYSTEM</div>
+                    <h3>Scalable IoT Node Hardware</h3>
+                    <div class="hardware-grid">
+                      <div class="hw-block">
+                        <span class="hw-title">ESP32 Core Node</span>
+                        <p>32-bit dual-core processor managing multi-sensor readings, coordinates, and LoRaWAN transmission.</p>
+                      </div>
+                      <div class="hw-block">
+                        <span class="hw-title">Sensor Array</span>
+                        <p>Gravity Analog pH probe, Electrical Conductivity TDS sensors, and DS18B20 digital thermal probes.</p>
+                      </div>
+                      <div class="hw-block">
+                        <span class="hw-title">Autonomous Hull</span>
+                        <p>Catamaran chassis with dual brushless motors, solar harvesting deck, and Neo-7M GPS tracking modules.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- SLIDE 4: CLOUD & SOFTWARE PIPELINE -->
+                  <div class="pitch-slide" data-slide="4">
+                    <div class="slide-badge">SLIDE 04 / 05: SOFTWARE PIPELINE</div>
+                    <h3>Secure & Real-Time Cloud Pipeline</h3>
+                    <div class="pipeline-flow">
+                      <div class="flow-step"><span>IoT Edge</span></div>
+                      <div class="flow-arrow">→</div>
+                      <div class="flow-step"><span>AWS IoT Core</span></div>
+                      <div class="flow-arrow">→</div>
+                      <div class="flow-step"><span>SageMaker (LSTM)</span></div>
+                      <div class="flow-arrow">→</div>
+                      <div class="flow-step"><span>Firebase DB</span></div>
+                      <div class="flow-arrow">→</div>
+                      <div class="flow-step"><span>Dashboard App</span></div>
+                    </div>
+                    <p class="pipeline-desc text-muted">Data is streamed securely using MQTT over WebSockets, processed by cloud ML models, and cached in real-time Firebase database before landing on client interfaces.</p>
+                  </div>
+
+                  <!-- SLIDE 5: IMPACT & BUSINESS MODEL -->
+                  <div class="pitch-slide" data-slide="5">
+                    <div class="slide-badge">SLIDE 05 / 05: IMPACT & UN SDG 6</div>
+                    <h3>Aligning Sustainability with Innovation</h3>
+                    <ul class="slide-points">
+                      <li><strong>Direct SDG 6 Alignment:</strong> Actively contributes to UN Sustainable Development Goal 6 (Clean Water and Sanitation) by ensuring safety.</li>
+                      <li><strong>Cost Reduction:</strong> Shrinks testing overheads by 75% through robotic patrols and preemptive predictive warnings.</li>
+                      <li><strong>Municipal SaaS Model:</strong> A plug-and-play subscription dashboard for municipal water agencies and ecological researchers.</li>
+                    </ul>
+                  </div>
+
+                </div>
+
+                <!-- CAROUSEL CONTROLS -->
+                <div class="carousel-nav">
+                  <button class="btn-pagination" id="prevSlideBtn">
+                    Prev
+                  </button>
+                  <div class="carousel-dots" id="carouselDots">
+                    <span class="dot active" data-slide="1"></span>
+                    <span class="dot" data-slide="2"></span>
+                    <span class="dot" data-slide="3"></span>
+                    <span class="dot" data-slide="4"></span>
+                    <span class="dot" data-slide="5"></span>
+                  </div>
+                  <button class="btn-pagination" id="nextSlideBtn">
+                    Next
+                  </button>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- BOTTOM ROW: HISTORICAL LOGS & PATHOGEN ASSESSMENT -->
+    <footer class="db-history-section">
+      
+      <!-- DISEASE RISK CARD -->
+      <div class="db-card disease-card" style="margin-bottom: 1.5rem;">
+        <div class="card-header">
+          <div class="header-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            <h2>AI Waterborne Pathogen & Disease Risk Assessor</h2>
+          </div>
+          <span class="status-badge safe" id="diseaseThreatBadge">MINIMAL THREAT</span>
+        </div>
+        <div class="card-body disease-body">
+          <div class="disease-grid">
+            <div class="disease-info-panel">
+              <span class="panel-subtitle font-mono" style="color: var(--text-secondary); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em;">Epidemiological Threat Analysis</span>
+              <p class="disease-summary" id="diseaseSummary">Water parameters are fully balanced. Low potential for pathogen survival or multiplication.</p>
+              <div class="threat-status-block">
+                <span class="threat-label">Overall Pathogen Threat Index</span>
+                <span class="threat-value" id="threatValue">1.8%</span>
+              </div>
+            </div>
+            <div class="disease-meters">
+              <!-- CHOLERA -->
+              <div class="disease-meter-item">
+                <div class="disease-meter-header">
+                  <span class="disease-name">Cholera <span class="pathogen-sci">(Vibrio cholerae)</span></span>
+                  <span class="disease-risk-badge safe" id="choleraRiskBadge">1% Risk</span>
+                </div>
+                <div class="gauge-bar">
+                  <div class="gauge-fill" id="choleraFill" style="width: 1%;"></div>
+                </div>
+              </div>
+              <!-- TYPHOID -->
+              <div class="disease-meter-item">
+                <div class="disease-meter-header">
+                  <span class="disease-name">Typhoid Fever <span class="pathogen-sci">(Salmonella typhi)</span></span>
+                  <span class="disease-risk-badge safe" id="typhoidRiskBadge">2% Risk</span>
+                </div>
+                <div class="gauge-bar">
+                  <div class="gauge-fill" id="typhoidFill" style="width: 2%;"></div>
+                </div>
+              </div>
+              <!-- DYSENTERY -->
+              <div class="disease-meter-item">
+                <div class="disease-meter-header">
+                  <span class="disease-name">Dysentery <span class="pathogen-sci">(Amoebic / Bacillary)</span></span>
+                  <span class="disease-risk-badge safe" id="dysenteryRiskBadge">1% Risk</span>
+                </div>
+                <div class="gauge-bar">
+                  <div class="gauge-fill" id="dysenteryFill" style="width: 1%;"></div>
+                </div>
+              </div>
+              <!-- GASTROENTERITIS -->
+              <div class="disease-meter-item">
+                <div class="disease-meter-header">
+                  <span class="disease-name">Gastroenteritis <span class="pathogen-sci">(E. coli / Campylobacter)</span></span>
+                  <span class="disease-risk-badge safe" id="gastroRiskBadge">3% Risk</span>
+                </div>
+                <div class="gauge-bar">
+                  <div class="gauge-fill" id="gastroFill" style="width: 3%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="db-card history-card">
+        <div class="card-header">
+          <div class="header-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <h2>Historical Telemetry Archive</h2>
+          </div>
+          <div class="history-controls">
+            <div class="filter-group">
+              <label for="filterStatus">Status</label>
+              <select id="filterStatus" class="filter-select">
+                <option value="all">All Logs</option>
+                <option value="safe">Safe Only</option>
+                <option value="warning">Warning Only</option>
+                <option value="critical">Critical Only</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label for="filterDate">Date Range</label>
+              <select id="filterDate" class="filter-select">
+                <option value="24h">Last 24 Hours</option>
+                <option value="7d" selected>Last 7 Days</option>
+                <option value="30d">Last 30 Days</option>
+              </select>
+            </div>
+            <button id="exportCsvBtn" class="btn btn-action">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              <span>Export CSV</span>
+            </button>
+          </div>
+        </div>
+        <div class="card-body history-table-wrapper">
+          <table class="history-table" id="historyTable">
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>Monitoring Station</th>
+                <th>pH Value</th>
+                <th>TDS Reading</th>
+                <th>Temperature</th>
+                <th>Water Quality Status</th>
+              </tr>
+            </thead>
+            <tbody id="historyTableBody">
+              <!-- Dynamically generated rows -->
+              <tr>
+                <td colspan="6" class="table-loading">Initializing database logs...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-pagination">
+          <span class="pagination-info" id="paginationInfo">Showing 1-10 of 120 records</span>
+          <div class="pagination-buttons">
+            <button class="btn-pagination" id="prevPageBtn" disabled>Previous</button>
+            <button class="btn-pagination" id="nextPageBtn">Next</button>
+          </div>
+        </div>
+      </div>
+    </footer>
+    
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Main Application Script -->
+  <script src="app.js"></script>
+</body>
+</html>
