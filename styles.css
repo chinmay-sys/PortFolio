@@ -1016,20 +1016,51 @@ section { padding: 6rem 0; }
   .projects-grid { grid-template-columns: 1fr; }
   .hero-meta { gap: 1.25rem; }
   .form-row { grid-template-columns: 1fr; }
+
+  /* Stats bar — horizontal row, scroll if needed */
+  .stats-bar {
+    display: flex;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .stats-bar::-webkit-scrollbar { display: none; }
+  .stat-item {
+    flex: 1;
+    min-width: 0;
+    padding: 0.7rem 0.75rem;
+    justify-content: center;
+    text-align: center;
+    border-right: 1px solid var(--border);
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-number { font-size: 0.85rem; }
+  .stat-label { font-size: 0.65rem; }
+
+  .hero-actions { gap: 0.5rem; }
+  .hero-actions .btn { font-size: 0.82rem; padding: 0.6rem 1rem; }
+}
+
+/* Very small phones — 2x2 grid */
+@media (max-width: 400px) {
   .stats-bar {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    width: 100%;
+    overflow-x: visible;
   }
   .stat-item {
-    padding: 0.75rem 1rem;
+    flex: unset;
     border-right: 1px solid var(--border);
     border-bottom: none;
+    flex-direction: row;
+    gap: 0.4rem;
+    justify-content: flex-start;
   }
   .stat-item:nth-child(2n) { border-right: none; }
   .stat-item:nth-child(1),
   .stat-item:nth-child(2) { border-bottom: 1px solid var(--border); }
   .stat-item:last-child { border-right: none; }
-  .hero-actions { gap: 0.5rem; }
-  .hero-actions .btn { font-size: 0.82rem; padding: 0.6rem 1rem; }
 }
